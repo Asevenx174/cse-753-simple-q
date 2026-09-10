@@ -1,60 +1,78 @@
 # Investigating Value Overestimation in DQN and Double DQN
 
-## Project overview
+## Project objective
 
-This project is a step-by-step rebuild of my earlier DQN and Double DQN
-project. The submitted project proposal defines the project scope, while the
-submitted project update contains preliminary results that the new
-implementation will attempt to reproduce and investigate more reliably.
+This project investigates value overestimation in Deep Q-Networks (DQN)
+and evaluates whether Double DQN reduces this bias and improves learning
+stability under controlled experimental conditions.
 
-## Research question
+The implementation uses Python, PyTorch, Tianshou, and Gymnasium.
 
-Does Double DQN reduce the value overestimation produced by DQN, and under
-what conditions does this reduction affect learning performance?
+## Research questions
 
-## Project objectives
+1. Why does maximizing noisy action-value estimates produce positive bias?
+2. Does Double DQN reduce learned value-estimation errors and inappropriate
+   risky choices in a controlled environment?
+3. How do DQN and Double DQN compare in performance and learning stability
+   on a standard control benchmark?
+4. How do action count, target-network update frequency, and exploration
+   affect the observed differences?
 
-1. Demonstrate maximization bias using a controlled synthetic experiment.
-2. Implement and verify the DQN and Double DQN target calculations.
-3. Train DQN and Double DQN agents using Tianshou.
-4. Evaluate the algorithms on CartPole, Acrobot, and a custom NoisyMax
-   environment.
-5. Investigate the effects of action count, target-network update frequency,
-   and exploration rate.
-6. Compare results using multiple random seeds and appropriate diagnostics.
-7. Explain why different algorithm settings produce different results.
-
-## Planned environments
+## Environments
 
 ### CartPole-v1
 
-CartPole will be used as an initial validation environment to confirm that the
-training pipeline can learn a relatively simple discrete-action control task.
-
-### Acrobot-v1
-
-Acrobot will be used as the principal standard benchmark for comparing DQN
-and Double DQN across multiple random seeds.
+CartPole is used only to validate that the shared training and evaluation
+pipeline can learn a meaningful policy.
 
 ### NoisyMax
 
-A custom controlled environment will be used to measure value overestimation
-against analytically known values and to study the effect of action-space
-size.
+NoisyMax is a controlled environment with analytically known action values.
+It is used to directly measure value-estimation error and risky behavior.
 
-## Experimental principle
+### Acrobot-v1
 
-Each comparison will change one experimental factor while holding the other
-settings fixed. DQN and Double DQN will use matching network architectures,
-training budgets, configurations, evaluation procedures, and random seeds.
+Acrobot is the main standard benchmark for comparing the performance and
+learning stability of DQN and Double DQN.
 
-The project will measure both policy performance and value-estimation
-behavior. A reduction in value overestimation will not automatically be
-interpreted as an improvement in episodic return.
+## Planned experiments
 
-## Reproducibility
+1. Verify the runtime and environment interaction.
+2. Reproduce synthetic maximization bias using action counts
+   2, 8, 32, 128, and 256.
+3. Verify DQN and Double DQN targets manually and against Tianshou.
+4. Validate the shared pipeline on CartPole.
+5. Train both algorithms on NoisyMax using action counts 2, 10, and 50.
+6. Compare both algorithms on Acrobot using three random seeds.
+7. Compare target-copy intervals 320 and 1000 on NoisyMax.
+8. Compare exploration rates 0.10 and 0.20 on NoisyMax.
 
-Experiment configurations, random seeds, dependency versions, raw results,
-and the corresponding Git commit will be recorded. Preliminary results from
-the earlier project update will be treated as historical observations rather
-than results that the new implementation must artificially reproduce.
+## Fair-comparison principle
+
+DQN and Double DQN will use the same network architecture, optimizer,
+training budget, random seeds, evaluation schedule, and environment settings.
+
+The intended algorithmic difference is the target calculation:
+
+- DQN uses the target network for both action selection and evaluation.
+- Double DQN uses the online network for selection and the target network
+  for evaluation.
+
+Experiments will change one selected factor at a time while keeping the
+remaining settings fixed.
+
+## Evaluation
+
+The project will examine:
+
+- Episodic return
+- TD loss
+- Value-estimation error
+- Risky-action behavior
+- Action coverage
+- Learning speed
+- Variation across random seeds
+
+Reduced estimation bias does not necessarily guarantee higher episodic
+return. Performance and value accuracy will therefore be interpreted
+separately.
