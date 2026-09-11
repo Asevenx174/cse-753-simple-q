@@ -3,6 +3,7 @@
 import argparse
 import platform
 import subprocess
+import os
 
 import gymnasium as gym
 import numpy as np
@@ -28,12 +29,21 @@ from src.utils.result_saving import (
 
 ENVIRONMENT = "CartPole-v1"
 SEED = 42
-TOTAL_STEPS = 50_000
-WARMUP_STEPS = 1_000
+
+TOTAL_STEPS = int(
+    os.getenv("CSE753_TOTAL_STEPS", "50000")
+)
+WARMUP_STEPS = int(
+    os.getenv("CSE753_WARMUP_STEPS", "1000")
+)
 COLLECTION_STEPS = 10
 BATCH_SIZE = 64
-EVALUATION_INTERVAL = 5_000
-EVALUATION_EPISODES = 10
+EVALUATION_INTERVAL = int(
+    os.getenv("CSE753_EVALUATION_INTERVAL", "5000")
+)
+EVALUATION_EPISODES = int(
+    os.getenv("CSE753_EVALUATION_EPISODES", "10")
+)
 
 def record_evaluation(network, environment_step):
     """Evaluate and create one row per episode."""
