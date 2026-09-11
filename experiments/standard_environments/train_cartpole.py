@@ -34,3 +34,35 @@ COLLECTION_STEPS = 10
 BATCH_SIZE = 64
 EVALUATION_INTERVAL = 5_000
 EVALUATION_EPISODES = 10
+
+def record_evaluation(network, environment_step):
+    """Evaluate and create one row per episode."""
+
+    returns, lengths = evaluate_greedy(
+        network,
+        ENVIRONMENT,
+        episodes=EVALUATION_EPISODES,
+        seed=10_000,
+    )
+
+    rows = []
+
+    for episode, (episode_return, episode_length) in enumerate(
+        zip(returns, lengths)
+    ):
+        rows.append(
+            {
+                "environment_step": environment_step,
+                "episode_id": episode,
+                "evaluation_seed": 10_000 + episode,
+                "episode_return": episode_return,
+                "episode_length": episode_length,
+            }
+        )
+
+    print(
+        f"Step {environment_step}: "
+        f"mean evaluation return = {np.mean(returns):.2f}"
+    )
+
+    return rows
