@@ -1,0 +1,9 @@
+{
+  "purpose": "storage_verification",
+  "environment": "CartPole-v1",
+  "algorithm": "DQN",
+  "seed": 42,
+  "gamma": 0.99,
+  "learning_rate": 0.001,
+  "target_update_frequency": 100
+}
