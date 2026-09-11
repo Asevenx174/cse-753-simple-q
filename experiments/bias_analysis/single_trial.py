@@ -22,8 +22,11 @@ def run_single_trial(
         size=action_count,
     )
 
+    # selects an action index that contains the largest value
     selected_action = int(np.argmax(estimator_a))
+    # evaluated by the same estimator that selects the actions
     maximum_error = float(estimator_a[selected_action])
+    # independent evaluation by the other estimator
     double_error = float(estimator_b[selected_action])
 
      return (
