@@ -29,7 +29,7 @@ def run_single_trial(
     # independent evaluation by the other estimator
     double_error = float(estimator_b[selected_action])
 
-     return (
+    return (
         estimator_a,
         estimator_b,
         selected_action,
@@ -38,7 +38,7 @@ def run_single_trial(
     )
 
 
-    def main() -> None:
+def main() -> None:
     """Run and print one reproducible trial."""
     action_count = 5
     seed = 42
