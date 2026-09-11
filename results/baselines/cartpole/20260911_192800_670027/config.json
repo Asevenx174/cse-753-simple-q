@@ -1,0 +1,6 @@
+{
+  "environment": "CartPole-v1",
+  "policy": "uniform_random",
+  "episodes": 20,
+  "base_seed": 42
+}
