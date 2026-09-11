@@ -1,0 +1,15 @@
+{
+  "environment": "CartPole-v1",
+  "algorithm": "dqn",
+  "seed": 42,
+  "total_steps": 50000,
+  "warmup_steps": 1000,
+  "collection_steps": 10,
+  "batch_size": 64,
+  "evaluation_interval": 5000,
+  "evaluation_episodes": 10,
+  "gamma": 0.99,
+  "learning_rate": 0.001,
+  "target_update_frequency": 100,
+  "updates_per_collection": 1
+}
