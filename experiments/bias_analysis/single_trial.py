@@ -36,3 +36,38 @@ def run_single_trial(
         maximum_error,
         double_error,
     )
+
+
+    def main() -> None:
+    """Run and print one reproducible trial."""
+    action_count = 5
+    seed = 42
+
+    rng = np.random.default_rng(seed)
+
+    (
+        estimator_a,
+        estimator_b,
+        selected_action,
+        maximum_error,
+        double_error,
+    ) = run_single_trial(
+        action_count=action_count,
+        rng=rng,
+    )
+
+    np.set_printoptions(precision=4, suppress=True)
+
+    print("Synthetic maximization-bias trial")
+    print(f"Seed: {seed}")
+    print(f"Action count: {action_count}")
+    print("True value of every action: 0.0")
+    print(f"Estimator A: {estimator_a}")
+    print(f"Estimator B: {estimator_b}")
+    print(f"Action selected using A: {selected_action}")
+    print(f"Standard maximum error: {maximum_error:.4f}")
+    print(f"Independent evaluation error: {double_error:.4f}")
+
+
+if __name__ == "__main__":
+    main()
