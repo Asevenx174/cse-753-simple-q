@@ -1,0 +1,9 @@
+Synthetic maximization-bias trial
+Seed: 42
+Action count: 5
+True value of every action: 0.0
+Estimator A: [ 0.3047 -1.04    0.7505  0.9406 -1.951 ]
+Estimator B: [-1.3022  0.1278 -0.3162 -0.0168 -0.853 ]
+Action selected using A: 3
+Standard maximum error: 0.9406
+Independent evaluation error: -0.0168
