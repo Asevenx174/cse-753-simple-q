@@ -7,6 +7,7 @@ import torch
 from src.agents.q_network import QNetwork
 
 # expected transformation [4, 6] --> [4, 3]
+# Check [batch. observation dimension] --> [batch, action count]
 class TestQNetwork(unittest.TestCase):
 
     def test_output_shape(self) -> None:
