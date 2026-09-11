@@ -10,19 +10,19 @@ def run_single_trial(
     """Generate one standard and one independently evaluated estimate."""
     if noise_std < 0.0:
         raise ValueError("noise_std must be nonnegative")
-        
+
     if action_count < 1:
         raise ValueError("action_count must be at least 1")
 
     estimator_a = rng.normal(
         loc=0.0,
-        scale=1.0,
+        scale=noise_std,
         size=action_count,
     )
 
     estimator_b = rng.normal(
         loc=0.0,
-        scale=1.0,
+        scale=noise_std,
         size=action_count,
     )
 
