@@ -67,7 +67,7 @@ def record_evaluation(network, environment_step):
 
     return rows
 
-    def train(algorithm_name):
+def train(algorithm_name):
     """Run one complete CartPole validation experiment."""
 
     torch.manual_seed(SEED)
@@ -165,7 +165,7 @@ def record_evaluation(network, environment_step):
 
     return network, training_rows, evaluation_rows, loss_rows
 
-    def current_git_commit():
+def current_git_commit():
     return subprocess.check_output(
         ["git", "rev-parse", "HEAD"],
         text=True,
@@ -229,7 +229,7 @@ def save_run(
 
     print("Completed run:", run_directory)
 
-    def main():
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--algorithm",
