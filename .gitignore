@@ -1,0 +1,24 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+
+# Local Python environments
+.venv/
+venv/
+
+# Local environment snapshot
+environment-lock.txt
+
+# Generated runtime verification
+results/verification/runtime_check.txt
+results/verification/pip_check.txt
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# VS Code local settings
+.vscode/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
