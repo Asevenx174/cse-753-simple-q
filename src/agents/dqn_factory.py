@@ -1,10 +1,11 @@
 """Create DQN or Double DQN through one shared path."""
 
 from tianshou.algorithm.modelfree.dqn import (
-    DQN,
     DiscreteQLearningPolicy,
 )
 from tianshou.algorithm.optim import AdamOptimizerFactory
+
+from src.agents.masked_dqn import MaskedDQN
 
 
 def build_dqn(
@@ -16,7 +17,9 @@ def build_dqn(
     """Build DQN or Double DQN with shared settings."""
 
     if algorithm_name not in ("dqn", "double_dqn"):
-        raise ValueError(f"Unknown algorithm: {algorithm_name}")
+        raise ValueError(
+            f"Unknown algorithm: {algorithm_name}"
+        )
 
     policy = DiscreteQLearningPolicy(
         model=network,
@@ -26,7 +29,7 @@ def build_dqn(
         eps_inference=0.0,
     )
 
-    return DQN(
+    return MaskedDQN(
         policy=policy,
         optim=AdamOptimizerFactory(lr=0.001),
         gamma=0.99,

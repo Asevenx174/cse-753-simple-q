@@ -18,17 +18,23 @@ class NoisyMaxEnv(gym.Env):
 
         self.action_count = action_count
         self.action_space = spaces.Discrete(action_count)
-        self.observation_space = spaces.Box(
-            low=0.0,
-            high=1.0,
-            shape=(2,),
-            dtype=np.float32,
+
+        self.observation_space = spaces.Dict(
+            {
+                "obs": spaces.Box(
+                    low=0.0,
+                    high=1.0,
+                    shape=(2,),
+                    dtype=np.float32,
+                ),
+                "mask": spaces.MultiBinary(action_count),
+            }
         )
 
         self.state = 0
         self.finished = False
 
-    def observation(self):
+    def state_observation(self):
         """Return the current state as a one-hot vector."""
 
         if self.finished:
@@ -60,6 +66,14 @@ class NoisyMaxEnv(gym.Env):
             dtype=np.int8,
         )
 
+    def observation(self):
+        """Return the state and its valid-action mask."""
+
+        return {
+            "obs": self.state_observation(),
+            "mask": self.action_mask(),
+        }
+
     def reset(self, *, seed=None, options=None):
         """Reset the environment to the initial state."""
 
@@ -88,11 +102,9 @@ class NoisyMaxEnv(gym.Env):
 
         if self.state == 0:
             if action == 0:
-                # Safe action: terminate with zero reward.
                 reward = 0.0
                 self.finished = True
             elif action == 1:
-                # Risky action: move to the noisy state.
                 reward = 0.0
                 self.state = 1
             else:
@@ -100,7 +112,6 @@ class NoisyMaxEnv(gym.Env):
                     "Only actions 0 and 1 are valid at s0."
                 )
         else:
-            # Every action at s1 gives a noisy terminal reward.
             reward = float(
                 self.np_random.normal(-0.1, 1.0)
             )
