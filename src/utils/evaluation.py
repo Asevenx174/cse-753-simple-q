@@ -10,11 +10,12 @@ def evaluate_greedy(
     environment_id: str,
     episodes: int = 5,
     seed: int = 10_000,
-) -> list[float]:
+) -> tuple[list[float], list[int]]:
     """Evaluate without exploration or learning."""
 
     environment = gym.make(environment_id)
     returns = []
+    lengths = []
 
     network.eval()
 
@@ -24,6 +25,7 @@ def evaluate_greedy(
                 seed=seed + episode
             )
             episode_return = 0.0
+            episode_length = 0
             finished = False
 
             while not finished:
@@ -35,9 +37,11 @@ def evaluate_greedy(
                 )
 
                 episode_return += reward
+                episode_length += 1
                 finished = terminated or truncated
 
             returns.append(float(episode_return))
+            lengths.append(episode_length)
 
     environment.close()
-    return returns
+    return returns, lengths

@@ -16,7 +16,7 @@ def main():
         for parameter in network.parameters()
     ]
 
-    returns = evaluate_greedy(
+    returns, lengths = evaluate_greedy(
         network,
         "CartPole-v1",
         episodes=5,
@@ -32,11 +32,15 @@ def main():
     assert weights_unchanged
     assert len(returns) == 5
     assert np.isfinite(returns).all()
+    assert len(lengths) == 5
+
+    assert returns == [float(length) for length in lengths]
 
     print("Training step: 0")
     print("Evaluation returns:", returns)
     print("Mean return:", np.mean(returns))
     print("Weights unchanged:", weights_unchanged)
+    print("Evaluation lengths:", lengths)
 
 
 if __name__ == "__main__":
