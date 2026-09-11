@@ -5,6 +5,7 @@ import json
 import platform
 import subprocess
 import time
+import os
 from pathlib import Path
 
 import numpy as np
@@ -30,8 +31,8 @@ from src.utils.result_saving import (
 )
 
 
-SEED = 100
-M = 10
+SEED = int(os.getenv("NOISYMAX_SEED", "100"))
+M = int(os.getenv("NOISYMAX_ACTION_COUNT", "10"))
 C = 320
 EPSILON = 0.10
 TOTAL_STEPS = 50_000

@@ -1,0 +1,12 @@
+{
+  "algorithm": "dqn",
+  "seed": 1,
+  "M": 50,
+  "C": 320,
+  "epsilon": 0.1,
+  "total_steps": 50000,
+  "diagnostic_interval": 1000,
+  "batch_size": 64,
+  "gamma": 0.99,
+  "learning_rate": 0.001
+}
