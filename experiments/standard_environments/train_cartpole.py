@@ -164,3 +164,67 @@ def record_evaluation(network, environment_step):
     example_environment.close()
 
     return network, training_rows, evaluation_rows, loss_rows
+
+    def current_git_commit():
+    return subprocess.check_output(
+        ["git", "rev-parse", "HEAD"],
+        text=True,
+    ).strip()
+
+
+def save_run(
+    algorithm_name,
+    network,
+    training_rows,
+    evaluation_rows,
+    loss_rows,
+):
+    """Save one completed validation run."""
+
+    run_directory = create_run_directory(
+        f"results/runs/cartpole/{algorithm_name}"
+    )
+
+    config = {
+        "environment": ENVIRONMENT,
+        "algorithm": algorithm_name,
+        "seed": SEED,
+        "total_steps": TOTAL_STEPS,
+        "warmup_steps": WARMUP_STEPS,
+        "collection_steps": COLLECTION_STEPS,
+        "batch_size": BATCH_SIZE,
+        "evaluation_interval": EVALUATION_INTERVAL,
+        "evaluation_episodes": EVALUATION_EPISODES,
+        "gamma": 0.99,
+        "learning_rate": 0.001,
+        "target_update_frequency": 100,
+        "updates_per_collection": 1,
+    }
+
+    metadata = {
+        "python": platform.python_version(),
+        "torch": torch.__version__,
+        "gymnasium": gym.__version__,
+        "tianshou": tianshou.__version__,
+        "device": "cpu",
+        "git_commit": current_git_commit(),
+        "run_status": "complete",
+    }
+
+    save_json(run_directory / "config.json", config)
+    save_json(run_directory / "metadata.json", metadata)
+    save_csv(run_directory / "training.csv", training_rows)
+    save_csv(run_directory / "evaluation.csv", evaluation_rows)
+    save_csv(run_directory / "loss.csv", loss_rows)
+
+    save_checkpoint(
+        run_directory / "final.pt",
+        network,
+        {
+            "observation_dim": 4,
+            "action_count": 2,
+            "algorithm": algorithm_name,
+        },
+    )
+
+    print("Completed run:", run_directory)
