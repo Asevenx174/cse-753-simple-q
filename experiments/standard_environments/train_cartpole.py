@@ -228,3 +228,19 @@ def save_run(
     )
 
     print("Completed run:", run_directory)
+
+    def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--algorithm",
+        required=True,
+        choices=("dqn", "double_dqn"),
+    )
+    arguments = parser.parse_args()
+
+    outputs = train(arguments.algorithm)
+    save_run(arguments.algorithm, *outputs)
+
+
+if __name__ == "__main__":
+    main()
