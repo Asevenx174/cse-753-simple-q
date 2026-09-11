@@ -5,8 +5,12 @@ import numpy as np
 def run_single_trial(
     action_count: int,
     rng: np.random.Generator,
+    noise_std: float = 1.0,
 ) -> tuple[np.ndarray, np.ndarray, int, float, float]:
     """Generate one standard and one independently evaluated estimate."""
+    if noise_std < 0.0:
+        raise ValueError("noise_std must be nonnegative")
+        
     if action_count < 1:
         raise ValueError("action_count must be at least 1")
 
