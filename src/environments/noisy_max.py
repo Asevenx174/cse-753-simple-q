@@ -11,12 +11,13 @@ class NoisyMaxEnv(gym.Env):
     metadata = {"render_modes": []}
 
     def __init__(self, action_count: int = 10):
+        super().__init__()
+
         if action_count < 2:
             raise ValueError("action_count must be at least 2.")
 
         self.action_count = action_count
         self.action_space = spaces.Discrete(action_count)
-
         self.observation_space = spaces.Box(
             low=0.0,
             high=1.0,
@@ -35,11 +36,10 @@ class NoisyMaxEnv(gym.Env):
 
         observation = np.zeros(2, dtype=np.float32)
         observation[self.state] = 1.0
-
         return observation
 
     def action_mask(self):
-        """Identify the canonical actions available in each state."""
+        """Return the valid-action mask for the current state."""
 
         if self.finished:
             return np.zeros(
@@ -88,15 +88,19 @@ class NoisyMaxEnv(gym.Env):
 
         if self.state == 0:
             if action == 0:
-                # Safe decision
+                # Safe action: terminate with zero reward.
                 reward = 0.0
                 self.finished = True
-            else:
-                # Actions 1 through M-1 are risky aliases.
+            elif action == 1:
+                # Risky action: move to the noisy state.
                 reward = 0.0
                 self.state = 1
+            else:
+                raise ValueError(
+                    "Only actions 0 and 1 are valid at s0."
+                )
         else:
-            # Every action at s1 produces a noisy terminal reward.
+            # Every action at s1 gives a noisy terminal reward.
             reward = float(
                 self.np_random.normal(-0.1, 1.0)
             )

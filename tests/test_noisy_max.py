@@ -11,13 +11,15 @@ class TestNoisyMax(unittest.TestCase):
         environment = NoisyMaxEnv()
         environment.reset(seed=42)
 
-        _, reward, terminated, truncated, _ = (
+        observation, reward, terminated, truncated, info = (
             environment.step(0)
         )
 
+        self.assertEqual(observation.tolist(), [0.0, 0.0])
         self.assertEqual(reward, 0.0)
         self.assertTrue(terminated)
         self.assertFalse(truncated)
+        self.assertFalse(info["action_mask"].any())
 
     def test_risky_action_reaches_noisy_state(self):
         environment = NoisyMaxEnv()
@@ -27,13 +29,10 @@ class TestNoisyMax(unittest.TestCase):
             environment.step(1)
         )
 
+        self.assertEqual(observation.tolist(), [0.0, 1.0])
         self.assertEqual(reward, 0.0)
         self.assertFalse(terminated)
         self.assertFalse(truncated)
-        self.assertEqual(
-            observation.tolist(),
-            [0.0, 1.0],
-        )
         self.assertTrue(info["action_mask"].all())
 
         _, _, terminated, truncated, _ = environment.step(5)
@@ -56,21 +55,12 @@ class TestNoisyMax(unittest.TestCase):
 
         self.assertEqual(first_reward, second_reward)
 
-    def test_other_initial_actions_follow_risky_path(self):
+    def test_invalid_initial_action_is_rejected(self):
         environment = NoisyMaxEnv(action_count=10)
         environment.reset(seed=42)
 
-        observation, reward, terminated, truncated, _ = (
-            environment.step(5)
-        )
-
-        self.assertEqual(
-            observation.tolist(),
-            [0.0, 1.0],
-        )
-        self.assertEqual(reward, 0.0)
-        self.assertFalse(terminated)
-        self.assertFalse(truncated)
+        with self.assertRaises(ValueError):
+            environment.step(2)
 
 
 if __name__ == "__main__":
