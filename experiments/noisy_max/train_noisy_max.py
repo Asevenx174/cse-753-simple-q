@@ -33,7 +33,10 @@ from src.utils.result_saving import (
 
 SEED = int(os.getenv("NOISYMAX_SEED", "100"))
 M = int(os.getenv("NOISYMAX_ACTION_COUNT", "10"))
-C = 320
+C = int(os.getenv("NOISYMAX_TARGET_UPDATE", "320"))
+if C <= 0:
+    raise ValueError("Target-update interval must be positive.")
+    
 EPSILON = 0.10
 TOTAL_STEPS = 50_000
 DIAGNOSTIC_INTERVAL = 1_000
