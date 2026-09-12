@@ -1,0 +1,13 @@
+study,algorithm,measure,mean,sample_sd
+"NoisyMax M=2, C=320, epsilon=0.1",dqn,late risky-value signed error,0.022283672863335324,0.007673222401856359
+"NoisyMax M=10, C=320, epsilon=0.1",dqn,late risky-value signed error,0.08037739260864417,0.017709213710367853
+"NoisyMax M=50, C=320, epsilon=0.1",dqn,late risky-value signed error,0.10781956377997995,0.016170474663838003
+"NoisyMax M=10, C=1000, epsilon=0.1",dqn,late risky-value signed error,0.0938189477577354,0.043765374166430386
+"NoisyMax M=10, C=320, epsilon=0.2",dqn,late risky-value signed error,0.08714701878776153,0.004683878230503819
+"NoisyMax M=2, C=320, epsilon=0.1",double_dqn,late risky-value signed error,0.018405830967606923,0.02787849096850773
+"NoisyMax M=10, C=320, epsilon=0.1",double_dqn,late risky-value signed error,0.05987040804030205,0.008904083649300922
+"NoisyMax M=50, C=320, epsilon=0.1",double_dqn,late risky-value signed error,0.10228927403527566,0.012720631982994392
+"NoisyMax M=10, C=1000, epsilon=0.1",double_dqn,late risky-value signed error,0.05742693398255065,0.02879494730985865
+"NoisyMax M=10, C=320, epsilon=0.2",double_dqn,late risky-value signed error,0.05959520477711252,0.023782254191395617
+Acrobot,dqn,final 100-episode return,-87.55333333333333,2.2362766674392773
+Acrobot,double_dqn,final 100-episode return,-82.35333333333332,0.128970280814355

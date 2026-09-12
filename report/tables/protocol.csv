@@ -1,0 +1,5 @@
+study,seeds,budget,settings
+NoisyMax matrix,"0,1,2",50000,"M=2,10,50; C=320; epsilon=0.10"
+Target-copy contrast,"0,1,2",50000,M=10; C=320 or 1000; epsilon=0.10
+Exploration contrast,"0,1,2",50000,M=10; C=320; epsilon=0.10 or 0.20
+Acrobot,"0,1,2",200000,100 fresh final-evaluation episodes
