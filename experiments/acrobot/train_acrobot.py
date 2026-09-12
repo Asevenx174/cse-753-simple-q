@@ -1,6 +1,7 @@
-"""Run a paired DQN or Double-DQN pilot on Acrobot."""
+"""Train DQN or Double DQN on Acrobot with paired seeds."""
 
 import argparse
+import os
 import platform
 import subprocess
 import time
@@ -24,19 +25,22 @@ from src.utils.result_saving import (
 )
 
 ENVIRONMENT = "Acrobot-v1"
-SEED = 100  # Pilot seed, outside final seeds 0, 1, 2
+SEED = int(os.getenv("ACROBOT_SEED", "100"))
 TOTAL_STEPS = 200_000
 WARMUP_STEPS = 1_000
 COLLECTION_STEPS = 10
 BATCH_SIZE = 64
 EVALUATION_INTERVAL = 5_000
 EVALUATION_EPISODES = 20
+FINAL_EVALUATION_EPISODES = 100
+FINAL_EVALUATION_SEED = 20_000
 
 
 def record_evaluation(network, step):
-    """Evaluate the greedy policy and return one row per episode."""
+    """Evaluate one training checkpoint on 20 fixed episodes."""
     returns, lengths = evaluate_greedy(
-        network, ENVIRONMENT,
+        network,
+        ENVIRONMENT,
         episodes=EVALUATION_EPISODES,
         seed=10_000,
     )
@@ -45,18 +49,18 @@ def record_evaluation(network, step):
     return [
         {
             "environment_step": step,
-            "episode_id": episode,
-            "evaluation_seed": 10_000 + episode,
+            "episode_id": i,
+            "evaluation_seed": 10_000 + i,
             "episode_return": float(episode_return),
             "episode_length": int(episode_length),
         }
-        for episode, (episode_return, episode_length)
+        for i, (episode_return, episode_length)
         in enumerate(zip(returns, lengths))
     ]
 
 
 def train(algorithm_name):
-    """Train one Acrobot pilot."""
+    """Train one algorithm using the selected seed."""
     torch.manual_seed(SEED)
     np.random.seed(SEED)
 
@@ -115,6 +119,7 @@ def train(algorithm_name):
             loss = float(statistics.loss)
             if not np.isfinite(loss):
                 raise RuntimeError(f"Non-finite loss at step {step}")
+
             loss_rows.append({
                 "environment_step": step,
                 "learning_update": updates,
@@ -132,10 +137,11 @@ def train(algorithm_name):
 
 def save_run(algorithm_name, network, training, evaluation, losses,
              runtime, updates):
-    """Save the pilot configuration, results, and final network."""
+    """Save training results and evaluate the final model."""
     directory = create_run_directory(
         f"results/runs/acrobot/{algorithm_name}"
     )
+
     save_json(directory / "config.json", {
         "environment": ENVIRONMENT,
         "algorithm": algorithm_name,
@@ -147,6 +153,8 @@ def save_run(algorithm_name, network, training, evaluation, losses,
         "replay_size": 20_000,
         "evaluation_interval": EVALUATION_INTERVAL,
         "evaluation_episodes": EVALUATION_EPISODES,
+        "final_evaluation_episodes": FINAL_EVALUATION_EPISODES,
+        "final_evaluation_seed": FINAL_EVALUATION_SEED,
         "gamma": 0.99,
         "learning_rate": 0.001,
         "target_update_frequency": 100,
@@ -172,13 +180,32 @@ def save_run(algorithm_name, network, training, evaluation, losses,
         "action_count": 3,
         "algorithm": algorithm_name,
     })
+
+    returns, lengths = evaluate_greedy(
+        network,
+        ENVIRONMENT,
+        episodes=FINAL_EVALUATION_EPISODES,
+        seed=FINAL_EVALUATION_SEED,
+    )
+    save_csv(directory / "final_evaluation.csv", [
+        {
+            "evaluation_seed": FINAL_EVALUATION_SEED + i,
+            "episode_return": float(episode_return),
+            "episode_length": int(episode_length),
+        }
+        for i, (episode_return, episode_length)
+        in enumerate(zip(returns, lengths))
+    ])
+
     print(f"Saved: {directory} (runtime: {runtime:.1f} seconds)")
+    print(f"100-episode final mean: {np.mean(returns):.2f}")
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--algorithm", required=True,
+        "--algorithm",
+        required=True,
         choices=("dqn", "double_dqn"),
     )
     args = parser.parse_args()
