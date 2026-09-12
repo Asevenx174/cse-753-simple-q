@@ -36,8 +36,11 @@ M = int(os.getenv("NOISYMAX_ACTION_COUNT", "10"))
 C = int(os.getenv("NOISYMAX_TARGET_UPDATE", "320"))
 if C <= 0:
     raise ValueError("Target-update interval must be positive.")
+
+EPSILON = float(os.getenv("NOISYMAX_EPSILON", "0.10"))
+if not 0.0 <= EPSILON <= 1.0:
+    raise ValueError("Epsilon must be between 0 and 1.")
     
-EPSILON = 0.10
 TOTAL_STEPS = 50_000
 DIAGNOSTIC_INTERVAL = 1_000
 BATCH_SIZE = 64

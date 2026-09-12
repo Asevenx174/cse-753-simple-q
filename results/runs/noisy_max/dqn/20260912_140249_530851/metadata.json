@@ -1,0 +1,9 @@
+{
+  "python": "3.11.15",
+  "torch": "2.5.1+cu121",
+  "tianshou": "2.0.1",
+  "git_commit": "9b254ffe688d51378524d8ba94cd5aa3e409df98",
+  "runtime_seconds": 34.573737327000345,
+  "learning_updates": 4994,
+  "run_status": "complete"
+}
