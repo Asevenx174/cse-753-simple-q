@@ -74,10 +74,18 @@ def train(algorithm_name):
         example_env.observation_space,
         example_env.action_space,
         algorithm_name,
+        epsilon=0.10,
     )
     environments = DummyVectorEnv([lambda: gym.make(ENVIRONMENT)])
+    environments.action_space[0].seed(SEED)
+
     replay = VectorReplayBuffer(total_size=20_000, buffer_num=1)
-    collector = Collector(algorithm, environments, replay)
+    collector = Collector(
+        algorithm,
+        environments,
+        replay,
+        exploration_noise=True,
+    )
 
     step = 0
     updates = 0
@@ -159,6 +167,11 @@ def save_run(algorithm_name, network, training, evaluation, losses,
         "learning_rate": 0.001,
         "target_update_frequency": 100,
         "updates_per_collection": 1,
+        "epsilon": 0.10,
+        "collector_exploration_noise": True,
+        "warmup_action_policy": "uniform_random",
+        "training_action_space_seed": SEED,
+        "target_update_frequency_units": "training_iterations",
     })
     save_json(directory / "metadata.json", {
         "python": platform.python_version(),

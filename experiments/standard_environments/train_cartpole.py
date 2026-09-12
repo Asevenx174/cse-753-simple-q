@@ -1,18 +1,15 @@
 """Train DQN or Double DQN on CartPole."""
 
 import argparse
+import os
 import platform
 import subprocess
-import os
 
 import gymnasium as gym
 import numpy as np
 import tianshou
 import torch
-
-from tianshou.algorithm.algorithm_base import (
-    policy_within_training_step,
-)
+from tianshou.algorithm.algorithm_base import policy_within_training_step
 from tianshou.data import Collector, VectorReplayBuffer
 from tianshou.env import DummyVectorEnv
 
@@ -26,16 +23,11 @@ from src.utils.result_saving import (
     save_json,
 )
 
-
 ENVIRONMENT = "CartPole-v1"
 SEED = 42
 
-TOTAL_STEPS = int(
-    os.getenv("CSE753_TOTAL_STEPS", "50000")
-)
-WARMUP_STEPS = int(
-    os.getenv("CSE753_WARMUP_STEPS", "1000")
-)
+TOTAL_STEPS = int(os.getenv("CSE753_TOTAL_STEPS", "50000"))
+WARMUP_STEPS = int(os.getenv("CSE753_WARMUP_STEPS", "1000"))
 COLLECTION_STEPS = 10
 BATCH_SIZE = 64
 EVALUATION_INTERVAL = int(
@@ -45,9 +37,9 @@ EVALUATION_EPISODES = int(
     os.getenv("CSE753_EVALUATION_EPISODES", "10")
 )
 
+
 def record_evaluation(network, environment_step):
     """Evaluate and create one row per episode."""
-
     returns, lengths = evaluate_greedy(
         network,
         ENVIRONMENT,
@@ -56,30 +48,26 @@ def record_evaluation(network, environment_step):
     )
 
     rows = []
-
     for episode, (episode_return, episode_length) in enumerate(
         zip(returns, lengths)
     ):
-        rows.append(
-            {
-                "environment_step": environment_step,
-                "episode_id": episode,
-                "evaluation_seed": 10_000 + episode,
-                "episode_return": episode_return,
-                "episode_length": episode_length,
-            }
-        )
+        rows.append({
+            "environment_step": environment_step,
+            "episode_id": episode,
+            "evaluation_seed": 10_000 + episode,
+            "episode_return": episode_return,
+            "episode_length": episode_length,
+        })
 
     print(
         f"Step {environment_step}: "
         f"mean evaluation return = {np.mean(returns):.2f}"
     )
-
     return rows
+
 
 def train(algorithm_name):
     """Run one complete CartPole validation experiment."""
-
     torch.manual_seed(SEED)
     np.random.seed(SEED)
 
@@ -91,11 +79,14 @@ def train(algorithm_name):
         example_environment.observation_space,
         example_environment.action_space,
         algorithm_name,
+        epsilon=0.10,
     )
 
     training_environments = DummyVectorEnv(
         [lambda: gym.make(ENVIRONMENT)]
     )
+    training_environments.action_space[0].seed(SEED)
+
     replay = VectorReplayBuffer(
         total_size=20_000,
         buffer_num=1,
@@ -104,6 +95,7 @@ def train(algorithm_name):
         algorithm,
         training_environments,
         replay,
+        exploration_noise=True,
     )
 
     environment_step = 0
@@ -135,14 +127,12 @@ def train(algorithm_name):
             collection.returns,
             collection.lens,
         ):
-            training_rows.append(
-                {
-                    "episode": training_episode,
-                    "ending_environment_step": environment_step,
-                    "episode_return": float(episode_return),
-                    "episode_length": int(episode_length),
-                }
-            )
+            training_rows.append({
+                "episode": training_episode,
+                "ending_environment_step": environment_step,
+                "episode_return": float(episode_return),
+                "episode_length": int(episode_length),
+            })
             training_episode += 1
 
         if environment_step >= WARMUP_STEPS:
@@ -154,16 +144,13 @@ def train(algorithm_name):
 
             learning_update += 1
             loss = float(statistics.loss)
-
             assert np.isfinite(loss)
 
-            loss_rows.append(
-                {
-                    "environment_step": environment_step,
-                    "learning_update": learning_update,
-                    "td_loss": loss,
-                }
-            )
+            loss_rows.append({
+                "environment_step": environment_step,
+                "learning_update": learning_update,
+                "td_loss": loss,
+            })
 
         if environment_step % EVALUATION_INTERVAL == 0:
             evaluation_rows.extend(
@@ -172,8 +159,8 @@ def train(algorithm_name):
 
     training_environments.close()
     example_environment.close()
-
     return network, training_rows, evaluation_rows, loss_rows
+
 
 def current_git_commit():
     return subprocess.check_output(
@@ -190,7 +177,6 @@ def save_run(
     loss_rows,
 ):
     """Save one completed validation run."""
-
     run_directory = create_run_directory(
         f"results/runs/cartpole/{algorithm_name}"
     )
@@ -209,6 +195,11 @@ def save_run(
         "learning_rate": 0.001,
         "target_update_frequency": 100,
         "updates_per_collection": 1,
+        "epsilon": 0.10,
+        "collector_exploration_noise": True,
+        "warmup_action_policy": "uniform_random",
+        "training_action_space_seed": SEED,
+        "target_update_frequency_units": "training_iterations",
     }
 
     metadata = {
@@ -236,8 +227,8 @@ def save_run(
             "algorithm": algorithm_name,
         },
     )
-
     print("Completed run:", run_directory)
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -247,7 +238,6 @@ def main():
         choices=("dqn", "double_dqn"),
     )
     arguments = parser.parse_args()
-
     outputs = train(arguments.algorithm)
     save_run(arguments.algorithm, *outputs)
 
