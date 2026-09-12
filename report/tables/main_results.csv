@@ -9,5 +9,5 @@ study,algorithm,measure,mean,sample_sd
 "NoisyMax M=50, C=320, epsilon=0.1",double_dqn,late risky-value signed error,0.10228927403527566,0.012720631982994392
 "NoisyMax M=10, C=1000, epsilon=0.1",double_dqn,late risky-value signed error,0.05742693398255065,0.02879494730985865
 "NoisyMax M=10, C=320, epsilon=0.2",double_dqn,late risky-value signed error,0.05959520477711252,0.023782254191395617
-Acrobot,dqn,final 100-episode return,-87.55333333333333,2.2362766674392773
-Acrobot,double_dqn,final 100-episode return,-82.35333333333332,0.128970280814355
+Acrobot,dqn,final 100-episode return,-85.54666666666667,5.749646365937074
+Acrobot,double_dqn,final 100-episode return,-86.87,3.4998999985713883

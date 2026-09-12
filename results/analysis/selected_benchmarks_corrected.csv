@@ -1,0 +1,9 @@
+environment,algorithm,seed,source_directory
+acrobot,dqn,0,results/runs/acrobot/dqn/20260912_175850_049315
+acrobot,double_dqn,0,results/runs/acrobot/double_dqn/20260912_180038_836690
+acrobot,dqn,1,results/runs/acrobot/dqn/20260912_180225_870105
+acrobot,double_dqn,1,results/runs/acrobot/double_dqn/20260912_180415_092895
+acrobot,dqn,2,results/runs/acrobot/dqn/20260912_180604_526662
+acrobot,double_dqn,2,results/runs/acrobot/double_dqn/20260912_180752_214060
+cartpole,dqn,42,results/runs/cartpole/dqn/20260912_180848_356447
+cartpole,double_dqn,42,results/runs/cartpole/double_dqn/20260912_180915_388183

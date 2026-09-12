@@ -31,7 +31,15 @@ def write_csv(path, rows):
 
 def load_runs():
     runs = {}
-    for path in ROOT.glob("*/*/config.json"):
+    with Path("results/analysis/selected_benchmarks_corrected.csv").open(
+        newline=""
+    ) as file:
+        paths = [
+            Path(row["source_directory"]) / "config.json"
+            for row in csv.DictReader(file)
+            if row["environment"] == "acrobot"
+        ]
+    for path in paths:
         config = json.loads(path.read_text())
         key = (config["algorithm"], config["seed"])
         if key[0] not in ALGORITHMS or key[1] not in SEEDS:

@@ -29,9 +29,9 @@ NoisyMax,double_dqn,2,10,1000,0.1,0.04934150643782183,0.04934150643782183,0,resu
 NoisyMax,double_dqn,0,10,320,0.2,0.07559996651451696,0.07559996651451696,0.09090909090909091,results/runs/noisy_max/double_dqn/20260912_140208_957212,,
 NoisyMax,double_dqn,1,10,320,0.2,0.03226715921813792,0.03226715921813792,0,results/runs/noisy_max/double_dqn/20260912_140330_221472,,
 NoisyMax,double_dqn,2,10,320,0.2,0.07091848859868267,0.07091848859868267,0,results/runs/noisy_max/double_dqn/20260912_140450_796705,,
-Acrobot,dqn,0,,,,,,,results/runs/acrobot/dqn/20260912_133132_939190,-87.36,0
-Acrobot,dqn,1,,,,,,,results/runs/acrobot/dqn/20260912_133455_134961,-89.88,0
-Acrobot,dqn,2,,,,,,,results/runs/acrobot/dqn/20260912_133820_949311,-85.42,0
-Acrobot,double_dqn,0,,,,,,,results/runs/acrobot/double_dqn/20260912_133311_603366,-82.46,0
-Acrobot,double_dqn,1,,,,,,,results/runs/acrobot/double_dqn/20260912_133638_932766,-82.39,0
-Acrobot,double_dqn,2,,,,,,,results/runs/acrobot/double_dqn/20260912_134007_581603,-82.21,0
+Acrobot,dqn,0,,,,,,,results/runs/acrobot/dqn/20260912_175850_049315,-82.47,0
+Acrobot,dqn,1,,,,,,,results/runs/acrobot/dqn/20260912_180225_870105,-92.18,0
+Acrobot,dqn,2,,,,,,,results/runs/acrobot/dqn/20260912_180604_526662,-81.99,0
+Acrobot,double_dqn,0,,,,,,,results/runs/acrobot/double_dqn/20260912_180038_836690,-89.31,0
+Acrobot,double_dqn,1,,,,,,,results/runs/acrobot/double_dqn/20260912_180415_092895,-88.44,0
+Acrobot,double_dqn,2,,,,,,,results/runs/acrobot/double_dqn/20260912_180752_214060,-82.86,0

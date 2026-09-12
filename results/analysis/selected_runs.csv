@@ -29,9 +29,9 @@ NoisyMax,results/runs/noisy_max/double_dqn/20260912_135334_739628
 NoisyMax,results/runs/noisy_max/double_dqn/20260912_140208_957212
 NoisyMax,results/runs/noisy_max/double_dqn/20260912_140330_221472
 NoisyMax,results/runs/noisy_max/double_dqn/20260912_140450_796705
-Acrobot,results/runs/acrobot/dqn/20260912_133132_939190
-Acrobot,results/runs/acrobot/dqn/20260912_133455_134961
-Acrobot,results/runs/acrobot/dqn/20260912_133820_949311
-Acrobot,results/runs/acrobot/double_dqn/20260912_133311_603366
-Acrobot,results/runs/acrobot/double_dqn/20260912_133638_932766
-Acrobot,results/runs/acrobot/double_dqn/20260912_134007_581603
+Acrobot,results/runs/acrobot/dqn/20260912_175850_049315
+Acrobot,results/runs/acrobot/dqn/20260912_180225_870105
+Acrobot,results/runs/acrobot/dqn/20260912_180604_526662
+Acrobot,results/runs/acrobot/double_dqn/20260912_180038_836690
+Acrobot,results/runs/acrobot/double_dqn/20260912_180415_092895
+Acrobot,results/runs/acrobot/double_dqn/20260912_180752_214060

@@ -1,0 +1,12 @@
+Step 0: mean evaluation return = 12.70
+Step 5000: mean evaluation return = 71.00
+Step 10000: mean evaluation return = 213.80
+Step 15000: mean evaluation return = 214.60
+Step 20000: mean evaluation return = 200.10
+Step 25000: mean evaluation return = 249.60
+Step 30000: mean evaluation return = 268.20
+Step 35000: mean evaluation return = 225.60
+Step 40000: mean evaluation return = 218.90
+Step 45000: mean evaluation return = 196.40
+Step 50000: mean evaluation return = 213.40
+Completed run: results/runs/cartpole/double_dqn/20260912_180915_388183

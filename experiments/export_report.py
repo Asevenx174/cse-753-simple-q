@@ -65,8 +65,15 @@ def main():
          "budget": 50000, "settings": "M=10; C=320 or 1000; epsilon=0.10"},
         {"study": "Exploration contrast", "seeds": "0,1,2",
          "budget": 50000, "settings": "M=10; C=320; epsilon=0.10 or 0.20"},
-        {"study": "Acrobot", "seeds": "0,1,2",
-         "budget": 200000, "settings": "100 fresh final-evaluation episodes"},
+        {
+            "study": "Acrobot",
+            "seeds": "0,1,2",
+            "budget": 200000,
+            "settings": (
+                "epsilon=0.10; collector exploration enabled; "
+                "100 fresh final-evaluation episodes"
+            ),
+        },
     ])
 
     results = [
@@ -103,7 +110,8 @@ def main():
     (REPORT / "captions.md").write_text(
         "Figure 1. Synthetic maximization bias.\n\n"
         "Figure 2. NoisyMax value error and behavior.\n\n"
-        "Figure 3. Acrobot learning curves.\n\n"
+        "Figure 3. Corrected Acrobot learning curves: mean across paired "
+        "seeds 0, 1, and 2 with epsilon=0.10.\n\n"
         "Figure 4. Target-copy and exploration contrasts.\n",
         encoding="utf-8",
     )
