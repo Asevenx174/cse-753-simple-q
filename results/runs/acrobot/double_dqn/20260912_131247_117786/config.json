@@ -1,0 +1,16 @@
+{
+  "environment": "Acrobot-v1",
+  "algorithm": "double_dqn",
+  "seed": 100,
+  "total_steps": 200000,
+  "warmup_steps": 1000,
+  "collection_steps": 10,
+  "batch_size": 64,
+  "replay_size": 20000,
+  "evaluation_interval": 5000,
+  "evaluation_episodes": 20,
+  "gamma": 0.99,
+  "learning_rate": 0.001,
+  "target_update_frequency": 100,
+  "updates_per_collection": 1
+}
