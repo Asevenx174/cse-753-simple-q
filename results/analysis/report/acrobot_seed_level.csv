@@ -1,0 +1,7 @@
+algorithm,seed,final_return,timeouts,source_directory
+dqn,0,-87.36,0,results/runs/acrobot/dqn/20260912_133132_939190
+dqn,1,-89.88,0,results/runs/acrobot/dqn/20260912_133455_134961
+dqn,2,-85.42,0,results/runs/acrobot/dqn/20260912_133820_949311
+double_dqn,0,-82.46,0,results/runs/acrobot/double_dqn/20260912_133311_603366
+double_dqn,1,-82.39,0,results/runs/acrobot/double_dqn/20260912_133638_932766
+double_dqn,2,-82.21,0,results/runs/acrobot/double_dqn/20260912_134007_581603
